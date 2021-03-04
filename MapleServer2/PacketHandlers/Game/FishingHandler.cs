@@ -19,17 +19,10 @@ namespace MapleServer2.PacketHandlers.Game
             switch (function)
             {
                 case 0:
-                    long rodItemUid = packet.ReadLong(); // Testing RodItemId: 32000055
-                    PacketWriter pWriter = PacketWriter.Of(SendOp.FISHING);
-                    pWriter.WriteHexString("04 00 08 00 00 00 0C F7 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0B F8 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0E F6 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0D F7 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0C F8 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0F F6 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0E F7 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 0D F8 10 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00");
-
-                    session.Send(pWriter);
-                    //session.Send(GuideObjectPacket.Bracket(session.FieldPlayer));
-                    session.Send(FishingPacket.Start(rodItemUid));
+                    HandleStart(session, packet);
                     break;
                 case 1:
-                    session.Send(FishingPacket.Stop());
-                    //session.Send(GuideObjectPacket.Remove(session.FieldPlayer));
+                    HandleStop(session);
                     break;
                 case 8: // Complete Fishing
                     // When fishing manually, 0 = success minigame, 1 = no minigame
@@ -42,6 +35,24 @@ namespace MapleServer2.PacketHandlers.Game
                 case 10: // Failed minigame
                     break;
             }
+        }
+
+
+        private static void HandleStart(GameSession session, PacketReader packet)
+        {
+            long rodItemUid = packet.ReadLong(); // Testing RodItemId: 32000055
+            PacketWriter pWriter = PacketWriter.Of(SendOp.FISHING);
+            pWriter.WriteHexString("04 00 0F 00 00 00 1D FC 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1C FD 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1B FE 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1D FD 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1C FE 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1D FE 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1B FA 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1C FA 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1B FB 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1D FA 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1C FB 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1B FC 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1D FB 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1C FC 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01 00 1B FD 08 00 81 96 98 00 19 00 00 00 98 3A 00 00 01");
+
+            session.Send(pWriter);
+            session.Send(GuideObjectPacket.Add(session));
+            session.Send(FishingPacket.Start(rodItemUid));
+        }
+
+        private static void HandleStop(GameSession session)
+        {
+            session.Send(FishingPacket.Stop());
+            session.Send(GuideObjectPacket.Remove(session.FieldPlayer));
         }
     }
 }

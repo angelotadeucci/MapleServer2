@@ -53,6 +53,7 @@ namespace MapleServer2.PacketHandlers.Game
             }
 
             session.FieldPlayer.Coord = syncStates[0].Coord.ToFloat();
+            session.Player.Rotation = CoordF.From(0, 0, syncStates[0].Rotation);
 
             if (IsOutOfBounds(session.FieldPlayer.Coord, session.FieldManager.BoundingBox))
             {

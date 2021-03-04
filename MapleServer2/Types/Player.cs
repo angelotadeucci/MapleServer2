@@ -136,14 +136,14 @@ namespace MapleServer2.Types
             {
                 SkillTabs = skillTabs,
                 StatPointDistribution = statPointDistribution,
-                MapId = 2000062,
+                MapId = 2000002,
                 AccountId = accountId,
                 CharacterId = characterId,
                 Name = name,
                 Gender = 1,
                 Motto = "Motto",
                 HomeName = "HomeName",
-                Coord = CoordF.From(2850, 2550, 1800), // Lith Harbor (2000062)
+                Coord = CoordF.From(3600, -600, 1351), // Lith Harbor (2000062)
                 // Coord = CoordF.From(500, 500, 15000), // Tria
                 Job = job,
                 SkinColor = new SkinColor()

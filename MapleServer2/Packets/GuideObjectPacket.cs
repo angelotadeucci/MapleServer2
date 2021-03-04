@@ -1,21 +1,24 @@
-﻿using Maple2Storage.Types;
+﻿using System;
+using Maple2Storage.Types;
 using MaplePacketLib2.Tools;
 using MapleServer2.Constants;
+using MapleServer2.Servers.Game;
 using MapleServer2.Types;
 
 namespace MapleServer2.Packets
 {
     public static class GuideObjectPacket
     {
-        public static Packet Bracket(IFieldObject<Player> player)
+        public static Packet Add(GameSession session)
         {
             PacketWriter pWriter = PacketWriter.Of(SendOp.GUIDE_OBJECT);
             pWriter.WriteByte(0x00);
             pWriter.WriteShort(1); // Type?
-            pWriter.WriteInt(player.ObjectId);
-            pWriter.WriteLong(player.Value.CharacterId);
-            pWriter.Write(Block.ClosestBlock(player.Coord));
-            pWriter.Write<CoordF>(default); // Unknown
+            pWriter.WriteInt(session.FieldPlayer.ObjectId);
+            pWriter.WriteLong(session.FieldPlayer.Value.CharacterId);
+            pWriter.Write(Block.ClosestBlock(session.FieldPlayer.Coord));
+            pWriter.WriteLong();
+            pWriter.WriteInt(1120822886);
 
             return pWriter;
         }

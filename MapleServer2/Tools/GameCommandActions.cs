@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Maple2Storage.Types;
 using Maple2Storage.Types.Metadata;
+using MaplePacketLib2.Tools;
+using MapleServer2.Constants;
 using MapleServer2.Data.Static;
 using MapleServer2.Enums;
 using MapleServer2.Packets;
@@ -17,6 +19,17 @@ namespace MapleServer2.Tools
             string[] args = command.ToLower().Split(" ", 2);
             switch (args[0])
             {
+                case "block":
+                    CoordF closestBlock = Block.ClosestBlock(session.FieldPlayer.Coord);
+                    closestBlock.Z -= Block.BLOCK_SIZE; // Get block under player
+                    if (MapMetadataStorage.BlockExists(session.Player.MapId, closestBlock.ToShort()))
+                    {
+                        session.SendNotice($"Closest block: {closestBlock}");
+                        PacketWriter pWriter = PacketWriter.Of(SendOp.FISHING);
+                        pWriter.Write(closestBlock);
+                        Console.WriteLine($"block bytes: {pWriter}");
+                    }
+                    break;
                 case "status":
                     ProcessStatusCommand(session, args.Length > 1 ? args[1] : "");
                     break;

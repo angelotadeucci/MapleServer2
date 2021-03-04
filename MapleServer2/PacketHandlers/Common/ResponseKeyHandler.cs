@@ -74,6 +74,7 @@ namespace MapleServer2.PacketHandlers.Common
                 InventoryController.LoadInventoryTab(session, tab);
             }
 
+            InventoryController.Add(session, new Item(32000055), true);
             List<QuestMetadata> questList = QuestMetadataStorage.GetAvailableQuests(player.Levels.Level); // TODO: This logic needs to be refactored when DB is implemented
 
             foreach (QuestMetadata quest in questList)
